@@ -1,7 +1,7 @@
 {{- define "storageset.node" -}}
 - name: {{ .name }}
   {{- if eq .type "server_node" }}
-  id: {{ default uuidv4 .id | quote }}
+  id: {{ uuidv4 | quote }}
   {{- else }}
   id: {{ default uuidv4 .id | replace "-" "" | quote }}
   {{- end }}
@@ -76,7 +76,7 @@ cluster:
     {{- range $key, $val := $val.nodes }}
     {{- $shortHost := (split "." $key)._0 -}}
     {{- if and $.Values.cortxRgw.enabled $val.serverUuid }}
-    ##TODO CORTX-28968 Revisit formatting and scope of where it should live
+    {{- $comment1 := "##TODO CORTX-28968 Revisit formatting and scope of where it should live" -}}
     {{- $serverName := printf "%s.%s.%s.svc.%s" $shortHost $.Values.cortxRgw.headlessServiceName $.Release.Namespace $.Values.clusterDomain -}}
     {{- include "storageset.node" (dict "name" $serverName "id" $val.serverUuid "type" "server_node") | nindent 4 }}
     {{- end }}
