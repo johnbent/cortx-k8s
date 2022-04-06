@@ -742,7 +742,7 @@ function deployCortxConfigMap()
         ## Evaluate if this should live inside Helm charts
         ## ie {{- $serverName := printf "%s.%s.%s.svc.%s" $shortHost {{ $.Values.cortxRgw.headlessServiceName }} {{ $.Release.Namespace }} {{ $.clusterDomain }} -}}
         helm_install_args+=(
-            --set "clusterStorageSets.${storage_set_name}.nodes.${pod_name}.serverUuid=${pod_name}"
+            --set "clusterStorageSets.${storage_set_name}.nodes.${pod_name}.serverUuid=${pod_name}.cortx-server-headless.${namespace}.svc"
             --set "cortxMotr.rgwEndpoints[${count}]=tcp://${pod_name}.cortx-server-headless.${namespace}.svc:21001"
             ## TODO CORTX-28968 - Revist if this endpoint is needed for each Pod or if we can have just one for the Service
             --set "cortxHare.haxServerEndpoints[${count}]=tcp://${pod_name}.cortx-server-headless.${namespace}.svc:22001"
