@@ -77,7 +77,6 @@ cluster:
     {{- $shortHost := (split "." $key)._0 -}}
     {{- if and $.Values.cortxRgw.enabled $val.serverUuid }}
     {{- $comment1 := "##TODO CORTX-28968 Revisit formatting and scope of where it should live" -}}
-    {{- $longServerName := printf "%s.%s.%s.svc.%s" $shortHost $.Values.cortxRgw.headlessServiceName $.Release.Namespace $.Values.clusterDomain -}}
     {{- $serverName := printf "%s.%s.%s.svc" $shortHost $.Values.cortxRgw.headlessServiceName $.Release.Namespace -}}
     {{- include "storageset.node" (dict "name" $val.serverUuid "id" $val.serverUuid "type" "server_node") | nindent 4 }}
     {{- end }}

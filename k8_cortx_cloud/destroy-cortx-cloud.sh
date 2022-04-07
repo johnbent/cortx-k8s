@@ -166,9 +166,7 @@ function deleteCortxServer()
     printf "########################################################\n"
     printf "# Delete CORTX Server                                  #\n"
     printf "########################################################\n"
-    for node in "${node_name_list[@]}"; do
-        uninstallHelmChart "cortx-server-${node}-${namespace}" "${namespace}"
-    done
+    uninstallHelmChart "cortx-server-${namespace}" "${namespace}"
 }
 
 function deleteCortxData()
@@ -535,7 +533,8 @@ fi
 #############################################################
 deleteKubernetesPrereqs
 if [[ (${#namespace_list[@]} -le 1 && "${found_match_np}" = true) || "${namespace}" == "default" ]]; then
-    deleteStorageProvisioner
+    ### CORTX-28968 TODO
+    #deleteStorageProvisioner
     helmChartCleanup
 fi
 deleteCortxNamespace

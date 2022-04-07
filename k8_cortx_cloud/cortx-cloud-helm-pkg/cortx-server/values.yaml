@@ -5,6 +5,7 @@ cortxserver:
   image: ghcr.io/seagate/centos:7
   replicas: 3
   secretinfo: secret-info.txt
+  secretname: cortx-secret
   serviceaccountname: cortx-sa
   hax:
     port: 22003
