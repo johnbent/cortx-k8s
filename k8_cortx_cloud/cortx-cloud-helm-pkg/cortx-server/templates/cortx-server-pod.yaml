@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.cortxserver.service.headless.name }}
-  namespace: {{ .Values.namespace }}
   labels:
     cortx.io/service-type: {{ .Values.cortxserver.serviceType }}
 spec:
@@ -19,7 +18,6 @@ metadata:
     app: {{ .Values.cortxserver.name }}
     cortx.io/service-type:  {{ .Values.cortxserver.serviceType }}
   name: {{ .Values.cortxserver.name }}
-  namespace: {{ .Values.namespace }}
 spec:
   podManagementPolicy: Parallel
   serviceName: {{ .Values.cortxserver.service.headless.name }}
@@ -34,8 +32,7 @@ spec:
         name: cortx-server
         cortx.io/service-type: cortx-server
         cortx.io/hax-enabled: "true"
-        cortx.io/service-domain: "{{ .Values.cortxserver.service.headless.name }}.{{ .Values.namespace }}.svc.{{ .Values.clusterdomain }}"
-        ##TODO CORTX-28968 THE ABOVE NEEDS TO BE FQDN (service-name.namespace.svc.cluster.local)
+        cortx.io/service-domain: "{{ .Values.cortxserver.service.headless.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterdomain }}"
     spec:
       subdomain: {{ .Values.cortxserver.service.headless.name }}
       setHostnameAsFQDN: true
@@ -49,11 +46,11 @@ spec:
             name: {{ .Values.cortxserver.sslcfgmap.name }}
         - name: machine-id
           emptyDir: {}
-        - name: local-path-pv
-          emptyDir: {}
-          # TODO CORTX-28968 Evaluate as volumeClaimTemplate as well
-          #persistentVolumeClaim:
-          #  claimName: {{ .Values.cortxserver.localpathpvc.name }}
+        #- name: local-path-pv
+          #emptyDir: {}
+          ### TODO CORTX-28968 Evaluate as volumeClaimTemplate as well
+          ##persistentVolumeClaim:
+          ##  claimName: {{ .Values.cortxserver.localpathpvc.name }}
         - name: {{ .Values.cortxserver.secretname }}
           secret:
             secretName: {{ .Values.cortxserver.secretname }}
@@ -149,3 +146,13 @@ spec:
             protocol: TCP
           securityContext:
             allowPrivilegeEscalation: false
+  volumeClaimTemplates:
+  - metadata:
+      name: local-path-pv
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: {{ .Values.cortxserver.localpathpvc.requeststoragesize }}

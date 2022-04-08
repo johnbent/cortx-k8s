@@ -1,6 +1,7 @@
 {{- define "storageset.node" -}}
 - name: {{ .name }}
   {{- if eq .type "server_node" }}
+  ### CORTX-28968 TODO Revisit defaults here since we are moving away from UUID entirely...
   id: {{ default uuidv4 .id | quote }}
   {{- else }}
   id: {{ default uuidv4 .id | replace "-" "" | quote }}
@@ -76,8 +77,6 @@ cluster:
     {{- range $key, $val := $val.nodes }}
     {{- $shortHost := (split "." $key)._0 -}}
     {{- if and $.Values.cortxRgw.enabled $val.serverUuid }}
-    {{- $comment1 := "##TODO CORTX-28968 Revisit formatting and scope of where it should live" -}}
-    {{- $serverName := printf "%s.%s.%s.svc" $shortHost $.Values.cortxRgw.headlessServiceName $.Release.Namespace -}}
     {{- include "storageset.node" (dict "name" $val.serverUuid "id" $val.serverUuid "type" "server_node") | nindent 4 }}
     {{- end }}
     {{- if $val.dataUuid }}

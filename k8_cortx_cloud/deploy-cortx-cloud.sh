@@ -1157,7 +1157,6 @@ function deployCortxServer()
         --set cortxserver.hax.port="${hax_port}" \
         --set cortxserver.secretname="${global_cortx_secret_name}" \
         --set cortxserver.serviceaccountname="${serviceAccountName}" \
-        --set namespace="${namespace}" \
         --namespace "${namespace}" \
         --dry-run -o yaml
 
@@ -1180,7 +1179,6 @@ function deployCortxServer()
         --set cortxserver.hax.port="${hax_port}" \
         --set cortxserver.secretname="${global_cortx_secret_name}" \
         --set cortxserver.serviceaccountname="${serviceAccountName}" \
-        --set namespace="${namespace}" \
         --namespace "${namespace}"
 
     printf "\nWait for CORTX Server to be ready"
