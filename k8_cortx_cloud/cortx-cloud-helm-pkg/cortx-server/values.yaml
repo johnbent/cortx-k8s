@@ -4,7 +4,6 @@ cortxserver:
   serviceType: cortx-server
   image: ghcr.io/seagate/centos:7
   replicas: 3
-  secretinfo: secret-info.txt
   secretname: cortx-secret
   serviceaccountname: cortx-sa
   hax:
@@ -31,6 +30,8 @@ cortxserver:
   machineid:
     mountpath: /etc/cortx/solution/node
   localpathpvc:
-    name: cortx-fs-server-local-pvc
     mountpath: /etc/cortx # This is the mount path in the container
     requeststoragesize: 1Gi
+    storageclass: local-path
+    accessmodes:
+      - ReadWriteOnce

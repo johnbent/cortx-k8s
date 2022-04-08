@@ -46,11 +46,9 @@ spec:
             name: {{ .Values.cortxserver.sslcfgmap.name }}
         - name: machine-id
           emptyDir: {}
-        #- name: local-path-pv
+        #- name: local-path
           #emptyDir: {}
-          ### TODO CORTX-28968 Evaluate as volumeClaimTemplate as well
-          ##persistentVolumeClaim:
-          ##  claimName: {{ .Values.cortxserver.localpathpvc.name }}
+          ### TODO CORTX-28968 Evaluate as volumeClaimTemplate versus emptyDir
         - name: {{ .Values.cortxserver.secretname }}
           secret:
             secretName: {{ .Values.cortxserver.secretname }}
@@ -78,7 +76,7 @@ spec:
             mountPath: {{ .Values.cortxserver.sslcfgmap.mountpath }}
           - name: machine-id
             mountPath: {{ .Values.cortxserver.machineid.mountpath }}
-          - name: local-path-pv
+          - name: local-path
             mountPath: {{ .Values.cortxserver.localpathpvc.mountpath }}
           - name: {{ .Values.cortxserver.secretname }}
             mountPath: /etc/cortx/solution/secret
@@ -108,7 +106,7 @@ spec:
               mountPath: {{ .Values.cortxserver.sslcfgmap.mountpath }}
             - name: machine-id
               mountPath: {{ .Values.cortxserver.machineid.mountpath }}
-            - name: local-path-pv
+            - name: local-path
               mountPath: {{ .Values.cortxserver.localpathpvc.mountpath }}
           ports:
           - name: rgw-http
@@ -138,7 +136,7 @@ spec:
               mountPath: {{ .Values.cortxserver.sslcfgmap.mountpath }}
             - name: machine-id
               mountPath: {{ .Values.cortxserver.machineid.mountpath }}
-            - name: local-path-pv
+            - name: local-path
               mountPath: {{ .Values.cortxserver.localpathpvc.mountpath }}
           ports:
           - name: hax
@@ -148,11 +146,10 @@ spec:
             allowPrivilegeEscalation: false
   volumeClaimTemplates:
   - metadata:
-      name: local-path-pv
+      name: local-path
     spec:
-      accessModes:
-        - ReadWriteOnce
-      storageClassName: local-path
+      accessModes: {{- toYaml .Values.cortxserver.localpathpvc.accessmodes | nindent 6 }}
+      storageClassName: {{ .Values.cortxserver.localpathpvc.storageclass }}
       resources:
         requests:
           storage: {{ .Values.cortxserver.localpathpvc.requeststoragesize }}
