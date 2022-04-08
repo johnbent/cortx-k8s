@@ -34,7 +34,8 @@ spec:
         name: cortx-server
         cortx.io/service-type: cortx-server
         cortx.io/hax-enabled: "true"
-        cortx.io/service-domain: {{ .Values.cortxserver.service.headless.name }}
+        cortx.io/service-domain: "{{ .Values.cortxserver.service.headless.name }}.{{ .Values.namespace }}.svc.{{ .Values.clusterdomain }}"
+        ##TODO CORTX-28968 THE ABOVE NEEDS TO BE FQDN (service-name.namespace.svc.cluster.local)
     spec:
       subdomain: {{ .Values.cortxserver.service.headless.name }}
       setHostnameAsFQDN: true

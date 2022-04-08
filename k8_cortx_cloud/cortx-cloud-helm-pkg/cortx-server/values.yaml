@@ -1,4 +1,5 @@
 namespace: default
+clusterdomain: cluster.local
 cortxserver:
   name: cortx-server
   serviceType: cortx-server
