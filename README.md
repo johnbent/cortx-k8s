@@ -4,6 +4,8 @@
 
 [CORTX Community Object Storage](https://github.com/Seagate/cortx) is 100% open-source object storage, uniquely optimized for mass capacity storage devices. This repository provides capability and support for deploying CORTX onto the [Kubernetes](https://kubernetes.io/) container orchestration platform.
 
+Just making a dummy edit so I can see whether you all have a PR template.
+
 ## Table of Contents
 
 1.  [Project Overview](#project-overview)
